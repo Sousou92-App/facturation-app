@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>Facturation Commerçants</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1 data-i18n="appTitle">Application de facturation</h1>
+      <div class="language-switcher">
+        <label for="language" data-i18n="languageLabel">Langue</label>
+        <select id="language" aria-label="language">
+          <option value="fr">Français</option>
+          <option value="ar">العربية</option>
+        </select>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="card">
+        <h2 data-i18n="newInvoice">Créer une facture</h2>
+        <form id="invoiceForm" class="form-grid">
+          <label>
+            <span data-i18n="client">Client</span>
+            <select id="invoiceClient" required></select>
+          </label>
+          <label>
+            <span data-i18n="description">Description</span>
+            <input id="invoiceDescription" required />
+          </label>
+          <label>
+            <span data-i18n="amount">Montant (MAD)</span>
+            <input id="invoiceAmount" type="number" min="0" step="0.01" required />
+          </label>
+          <label>
+            <span data-i18n="invoiceDate">Date</span>
+            <input id="invoiceDate" type="date" required />
+          </label>
+          <button type="submit" data-i18n="create">Créer</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2 data-i18n="clients">Liste clients</h2>
+        <form id="clientForm" class="inline-form">
+          <input id="clientName" placeholder="Nom" required />
+          <input id="clientPhone" placeholder="WhatsApp (+212...)" required />
+          <button type="submit" data-i18n="addClient">Ajouter</button>
+        </form>
+        <ul id="clientsList" class="clients-list"></ul>
+      </section>
+
+      <section class="card wide">
+        <h2 data-i18n="dashboard">Tableau de bord mensuel</h2>
+        <div class="stats-grid">
+          <article>
+            <h3 data-i18n="totalInvoices">Factures du mois</h3>
+            <p id="statInvoices">0</p>
+          </article>
+          <article>
+            <h3 data-i18n="paidAmount">Montant payé</h3>
+            <p id="statPaid">0 MAD</p>
+          </article>
+          <article>
+            <h3 data-i18n="unpaidAmount">Montant non payé</h3>
+            <p id="statUnpaid">0 MAD</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="card wide">
+        <h2 data-i18n="invoices">Factures</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="client">Client</th>
+                <th data-i18n="description">Description</th>
+                <th data-i18n="amount">Montant (MAD)</th>
+                <th data-i18n="invoiceDate">Date</th>
+                <th data-i18n="status">Statut</th>
+                <th data-i18n="actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="invoicesBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <template id="invoiceRowTemplate">
+      <tr>
+        <td class="col-client"></td>
+        <td class="col-description"></td>
+        <td class="col-amount"></td>
+        <td class="col-date"></td>
+        <td class="col-status"></td>
+        <td class="actions"></td>
+      </tr>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
