@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Plan {
+  TRIAL
+  FREE
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model User {
+  id                  String             @id
+  email               String?            @unique
+  phone               String             @default("+213")
+  plan                Plan               @default(TRIAL)
+  status              SubscriptionStatus @default(ACTIVE)
+  trialEndsAt         DateTime?
+  currentPeriodEndsAt DateTime?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  invoices            Invoice[]
+  payments            Payment[]
+}
+
+model Invoice {
+  id          String   @id @default(cuid())
+  userId      String
+  customer    String
+  description String
+  amountDzd   Int
+  isPaid      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  userId      String
+  checkoutId  String        @unique
+  amountDzd   Int
+  status      PaymentStatus @default(PENDING)
+  provider    String        @default("chargily")
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
